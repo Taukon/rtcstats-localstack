@@ -1,0 +1,91 @@
+services:  
+
+  rtcstats:
+    container_name: rtcstats
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    tty: true
+    ports:
+      - 3000:3000
+      - 8095:8095
+      - 8087:8087
+    volumes:
+      - ./rtcstats:/rtcstats
+    working_dir: /rtcstats/rtcstats-server
+    # for AWS
+    environment:
+      - AWS_ACCESS_KEY_ID=dummy
+      - AWS_SECRET_ACCESS_KEY=dummy
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_DEFAULT_OUTPUT=json
+      - AWS_ENDPOINT_URL=http://localstack:4566
+
+      # Localstack
+      - LOCALSTACK_ENDPOINT=http://localstack:4566
+
+      # rtcstats-server & rtc-visualizer
+      - RTCSTATS_METADATA_TABLE=rtcstats-meta-table-local
+      - RTCSTATS_S3_BUCKET=jitsi-micros-rtcstats-server
+      - RTCSTATS_JWT_PUBLIC_KEY=dummy
+
+      # rtcstats-server: server
+      - RTCSTATS_KEYPATH=./certs/key.pem
+      - RTCSTATS_CERTPath=./certs/cert.pem
+      - RTCSTATS_TEMPPATH=temp
+      - RTCSTATS_HTTPS=true
+
+      # rtcstats-server: amplitude
+      # - RTCSTATS_AMPLITUDE_KEY=
+
+      # rtcstats-server: firehose
+      - RTCSTATS_FIREHOSE_AWS_REGION
+      - RTCSTATS_FIREHOSE_MEETING_STREAM
+      - RTCSTATS_FIREHOSE_PC_STREAM
+      - RTCSTATS_FIREHOSE_TRACKS_STREAM
+      - RTCSTATS_FIREHOSE_E2E_PING_STREAM
+      - RTCSTATS_FIREHOSE_FACE_LANDMARKS_STREAM
+      - RTCSTATS_FIREHOSE_MEETING_EVENT_STREAM
+
+      # rtcstats-server: s3
+      - RTCSTATS_S3_AWS_REGION
+      # - RTCSTATS_S3_BUCKET
+
+      # rtcstats-server: dynamo
+      # - RTCSTATS_METADATA_TABLE
+
+      # rtcstats-server: webhooks
+      - RTCSTATS_WEBHOOK_ENDPOINT
+      - RTCSTATS_JWT_AUDIENCE
+      - RTCSTATS_JWT_ISSUER
+
+      # rtcstats-server: secretmanager
+      - RTCSTATS_AWS_SECRET_REGION
+      - RTCSTATS_JWT_SECRET_ID
+
+      # rtc-visualizer
+      - AWS_REGION=us-east-1
+      # - RTCSTATS_S3_BUCKET
+      # - RTCSTATS_METADATA_TABLE
+      - RTCSTATS_FILES_ENDPOINT
+      - RTCSTATS_JWT_EGHT_PUBLIC_KEY=dummy
+      - USERS_FILE=.data/users.json
+
+    depends_on:
+      - localstack
+
+
+  localstack:
+    container_name: localstack
+    image: localstack/localstack
+    ports:
+      - 4566:4566            # LocalStack Gateway
+      - 4510-4559:4510-4559  # external services port range
+    environment:
+      # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
+      - SERVICES=lambda,iam,logs,s3,dynamodb,firehose
+      - DEBUG=${DEBUG:-1}
+      - AWS_DEFAULT_REGION=us-east-1
+    volumes:
+      - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
