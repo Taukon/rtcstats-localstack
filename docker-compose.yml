@@ -30,10 +30,14 @@ services:
       - RTCSTATS_JWT_PUBLIC_KEY=dummy
 
       # rtcstats-server: server
-      - RTCSTATS_KEYPATH=./certs/key.pem
-      - RTCSTATS_CERTPath=./certs/cert.pem
+      - RTCSTATS_LOG_LEVEL
+      - RTCSTATS_ENVIRONMENT
+      # - RTCSTATS_KEYPATH=./certs/key.pem
+      # - RTCSTATS_CERTPath=./certs/cert.pem
       - RTCSTATS_TEMPPATH=temp
       - RTCSTATS_HTTPS=true
+      - RTCSTATS_SKIP_LOAD_BALANCER_IP
+      - RTCSTATS_JSON_CONSOLE_LOG
 
       # rtcstats-server: amplitude
       # - RTCSTATS_AMPLITUDE_KEY=
@@ -48,11 +52,15 @@ services:
       - RTCSTATS_FIREHOSE_MEETING_EVENT_STREAM
 
       # rtcstats-server: s3
+      - RTCSTATS_S3_ACCESSKEYID
+      - RTCSTATS_S3_SECRETACCESSKEY
       - RTCSTATS_S3_AWS_REGION=us-east-1
-      # - RTCSTATS_S3_BUCKET
+      # -- RTCSTATS_S3_BUCKET
+      - RTCSTATS_S3_USEIAMAUTH=true
+      - RTCSTATS_S3_SIGNEDLINKEXPIRATIONSEC
 
       # rtcstats-server: dynamo
-      # - RTCSTATS_METADATA_TABLE
+      # -- RTCSTATS_METADATA_TABLE
 
       # rtcstats-server: webhooks
       - RTCSTATS_WEBHOOK_ENDPOINT
@@ -65,8 +73,9 @@ services:
 
       # rtc-visualizer
       - AWS_REGION=us-east-1
-      # - RTCSTATS_S3_BUCKET
-      # - RTCSTATS_METADATA_TABLE
+      # -- RTCSTATS_S3_BUCKET
+      # -- RTCSTATS_METADATA_TABLE
+      # -- RTCSTATS_JWT_PUBLIC_KEY
       - RTCSTATS_FILES_ENDPOINT
       - RTCSTATS_JWT_EGHT_PUBLIC_KEY=dummy
       - USERS_FILE=.data/users.json
