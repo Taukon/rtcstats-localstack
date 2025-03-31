@@ -3,6 +3,7 @@
 
 1. ### setup
 ```shell
+rtcstats-localstack$ ./user-example.sh
 rtcstats-localstack$ docker compose up -d
 ```
 
@@ -24,6 +25,7 @@ rtcstats-localstack$ docker compose up -d
 3. ### start rtc-visualizer
 - access rtcstats container's shell
 ```shell
+/rtcstats/rtc-visualizer# npm install
 /rtcstats/rtc-visualizer# npm run start
 ```
 
