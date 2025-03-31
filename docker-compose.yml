@@ -48,7 +48,7 @@ services:
       - RTCSTATS_FIREHOSE_MEETING_EVENT_STREAM
 
       # rtcstats-server: s3
-      - RTCSTATS_S3_AWS_REGION
+      - RTCSTATS_S3_AWS_REGION=us-east-1
       # - RTCSTATS_S3_BUCKET
 
       # rtcstats-server: dynamo
