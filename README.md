@@ -3,7 +3,7 @@
 
 1. ### setup
 ```shell
-rtcstats-docker$ docker compose up -d
+rtcstats-localstack$ docker compose up -d
 ```
 
 - access rtcstats container's shell
