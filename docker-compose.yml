@@ -5,19 +5,15 @@ services:
     build:
       context: ./rtcstats-server
       dockerfile: ./Dockerfile
-    tty: true
     ports:
       - 3000:3000
       - 8095:8095
-    # volumes:
-    #   - ./rtcstats-server:/rtcstats-server2
-
+    volumes:
+      - ./rtcstats-server/certs:/rtcstats-server/certs
     environment:
-      # AWS
+      # For AWS credentials
       - AWS_ACCESS_KEY_ID=dummy
       - AWS_SECRET_ACCESS_KEY=dummy
-      - AWS_DEFAULT_REGION=us-east-1
-      - AWS_DEFAULT_OUTPUT=json
       - AWS_ENDPOINT_URL=http://localstack:4566
 
       # Localstack
@@ -26,8 +22,8 @@ services:
       # rtcstats-server: server
       - RTCSTATS_LOG_LEVEL
       - RTCSTATS_ENVIRONMENT
-      # - RTCSTATS_KEYPATH=./certs/key.pem
-      # - RTCSTATS_CERTPath=./certs/cert.pem
+      - RTCSTATS_KEYPATH=./certs/key.pem
+      - RTCSTATS_CERTPath=./certs/cert.pem
       - RTCSTATS_TEMPPATH=temp
       - RTCSTATS_HTTPS=true
       - RTCSTATS_SKIP_LOAD_BALANCER_IP
@@ -75,18 +71,14 @@ services:
     build:
       context: ./rtc-visualizer
       dockerfile: ./Dockerfile
-    tty: true
     ports:
       - 8087:8087
-    # volumes:
-    #   - ./rtc-visualizer:/rtc-visualizer2
-
+    volumes:
+      - ./rtc-visualizer/.data:/rtc-visualizer/.data
     environment:
-      # AWS
+      # For AWS credentials
       - AWS_ACCESS_KEY_ID=dummy
       - AWS_SECRET_ACCESS_KEY=dummy
-      - AWS_DEFAULT_REGION=us-east-1
-      - AWS_DEFAULT_OUTPUT=json
       - AWS_ENDPOINT_URL=http://localstack:4566
 
       # Localstack
@@ -111,15 +103,10 @@ services:
     build:
       context: ./rtcstats-initialize
       dockerfile: ./Dockerfile
-    # volumes:
-    #   - ./rtcstats-initialize:/rtcstats-initialize2
-
     environment:
-      # AWS
+      # For AWS credentials
       - AWS_ACCESS_KEY_ID=dummy
       - AWS_SECRET_ACCESS_KEY=dummy
-      - AWS_DEFAULT_REGION=us-east-1
-      - AWS_DEFAULT_OUTPUT=json
       - AWS_ENDPOINT_URL=http://localstack:4566
 
       # Localstack
@@ -144,6 +131,14 @@ services:
       - SERVICES=lambda,iam,logs,s3,dynamodb,firehose
       - DEBUG=${DEBUG:-1}
       - AWS_DEFAULT_REGION=us-east-1
+
+      # For AWS credentials
+      - AWS_ACCESS_KEY_ID=dummy
+      - AWS_SECRET_ACCESS_KEY=dummy
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_DEFAULT_OUTPUT=json
+      - AWS_ENDPOINT_URL=http://localstack:4566
+
     volumes:
       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
