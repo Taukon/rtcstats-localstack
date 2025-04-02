@@ -1,8 +1,8 @@
 #!/bin/bash
 
-mkdir -p ./rtcstats/rtc-visualizer/.data
+mkdir -p ./rtc-visualizer/.data
 
-cat <<EOF > ./rtcstats/rtc-visualizer/.data/users.json
+cat <<EOF > ./rtc-visualizer/.data/users.json
 {
     "admin": "admin"
 }
