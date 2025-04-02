@@ -1,32 +1,31 @@
 ## rtcstats-server with Localstack
 
 
-1. ### setup
+### Setup
+
+create users.json for rtc-visualizer
 ```shell
 rtcstats-localstack$ ./user-example.sh
+```
+
+Run Docker Compose
+```shell
 rtcstats-localstack$ docker compose up -d
 ```
-
-- access rtcstats container's shell
-```shell
-/rtcstats/rtcstats-server# npm install
-/rtcstats/rtcstats-server# npm run init:s3
-/rtcstats/rtcstats-server# npm run init:dynamodb
-```
 ---
 
-2. ### start rtcstats-server
-- access rtcstats container's shell
+### Use HTTPS
+
+Move key and crt files to `rtcstats-server/certs` directory
 ```shell
-/rtcstats/rtcstats-server# npm run start
+rtcstats-localstack$ mv YOUR_KEY_FILE ./rtcstats-server/certs
+rtcstats-localstack$ mv YOUR_CRT_FILE ./rtcstats-server/certs
 ```
 
----
-3. ### start rtc-visualizer
-- access rtcstats container's shell
-```shell
-/rtcstats/rtc-visualizer# npm install
-/rtcstats/rtc-visualizer# npm run start
+Rewrite docker-compose.yml
+```
+- RTCSTATS_KEYPATH=./rtcstats-server/certs/YOUR_KEY_FILE
+- RTCSTATS_CERTPath=./rtcstats-server/certs/YOUR_CRT_FILE
 ```
 
 ---

@@ -16,7 +16,23 @@ RUN curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscl
     && rm -rf aws awscliv2.zip
 
 #------------------------------------------------------------------------------
-# rtcstats-server
+# rtcstats-initialize
 #------------------------------------------------------------------------------
-    WORKDIR /rtcstats
-# WORKDIR /rtcstats/rtcstats-server
+
+ENV app rtcstats-initialize
+
+WORKDIR /$app
+
+# Use cached node_modules in case package.json doesn't change.
+# The npm install command needs to run before the app files are
+# copied otherwise anytime an app file is changed it will invalidate
+# the npm install command cache.
+COPY --chown=$app:$app package.json package-lock.json /$app/
+
+RUN npm install
+
+COPY --chown=$app:$app . /$app
+
+ENTRYPOINT [ "npm", "run"]
+
+CMD [ "start" ]

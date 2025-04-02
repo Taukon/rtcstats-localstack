@@ -1,39 +1,29 @@
 services:  
 
-  rtcstats:
-    container_name: rtcstats
+  rtcstats_server:
+    container_name: rtcstats_server
     build:
-      context: ./
+      context: ./rtcstats-server
       dockerfile: ./Dockerfile
-    tty: true
     ports:
       - 3000:3000
       - 8095:8095
-      - 8087:8087
     volumes:
-      - ./rtcstats:/rtcstats
-    working_dir: /rtcstats/rtcstats-server
-    # for AWS
+      - ./rtcstats-server/certs:/rtcstats-server/certs
     environment:
+      # For AWS credentials
       - AWS_ACCESS_KEY_ID=dummy
       - AWS_SECRET_ACCESS_KEY=dummy
-      - AWS_DEFAULT_REGION=us-east-1
-      - AWS_DEFAULT_OUTPUT=json
       - AWS_ENDPOINT_URL=http://localstack:4566
 
       # Localstack
       - LOCALSTACK_ENDPOINT=http://localstack:4566
 
-      # rtcstats-server & rtc-visualizer
-      - RTCSTATS_METADATA_TABLE=rtcstats-meta-table-local
-      - RTCSTATS_S3_BUCKET=jitsi-micros-rtcstats-server
-      - RTCSTATS_JWT_PUBLIC_KEY=dummy
-
       # rtcstats-server: server
       - RTCSTATS_LOG_LEVEL
       - RTCSTATS_ENVIRONMENT
-      # - RTCSTATS_KEYPATH=./certs/key.pem
-      # - RTCSTATS_CERTPath=./certs/cert.pem
+      - RTCSTATS_KEYPATH=./certs/key.pem
+      - RTCSTATS_CERTPath=./certs/cert.pem
       - RTCSTATS_TEMPPATH=temp
       - RTCSTATS_HTTPS=true
       - RTCSTATS_SKIP_LOAD_BALANCER_IP
@@ -55,12 +45,12 @@ services:
       - RTCSTATS_S3_ACCESSKEYID
       - RTCSTATS_S3_SECRETACCESSKEY
       - RTCSTATS_S3_AWS_REGION=us-east-1
-      # -- RTCSTATS_S3_BUCKET
+      - RTCSTATS_S3_BUCKET=jitsi-micros-rtcstats-server
       - RTCSTATS_S3_USEIAMAUTH=true
       - RTCSTATS_S3_SIGNEDLINKEXPIRATIONSEC
 
       # rtcstats-server: dynamo
-      # -- RTCSTATS_METADATA_TABLE
+      - RTCSTATS_METADATA_TABLE=rtcstats-meta-table-local
 
       # rtcstats-server: webhooks
       - RTCSTATS_WEBHOOK_ENDPOINT
@@ -71,14 +61,60 @@ services:
       - RTCSTATS_AWS_SECRET_REGION
       - RTCSTATS_JWT_SECRET_ID
 
+    depends_on:
+      rtcstats_initialize:
+        condition: service_completed_successfully
+
+
+  rtc_visualizer:
+    container_name: rtc_visualizer
+    build:
+      context: ./rtc-visualizer
+      dockerfile: ./Dockerfile
+    ports:
+      - 8087:8087
+    volumes:
+      - ./rtc-visualizer/.data:/rtc-visualizer/.data
+    environment:
+      # For AWS credentials
+      - AWS_ACCESS_KEY_ID=dummy
+      - AWS_SECRET_ACCESS_KEY=dummy
+      - AWS_ENDPOINT_URL=http://localstack:4566
+
+      # Localstack
+      - LOCALSTACK_ENDPOINT=http://localstack:4566
+
       # rtc-visualizer
       - AWS_REGION=us-east-1
-      # -- RTCSTATS_S3_BUCKET
-      # -- RTCSTATS_METADATA_TABLE
-      # -- RTCSTATS_JWT_PUBLIC_KEY
+      - RTCSTATS_S3_BUCKET=jitsi-micros-rtcstats-server
+      - RTCSTATS_METADATA_TABLE=rtcstats-meta-table-local
+      - RTCSTATS_JWT_PUBLIC_KEY=dummy
       - RTCSTATS_FILES_ENDPOINT
       - RTCSTATS_JWT_EGHT_PUBLIC_KEY=dummy
       - USERS_FILE=.data/users.json
+    
+    depends_on:
+      rtcstats_initialize:
+        condition: service_completed_successfully
+
+  
+  rtcstats_initialize:
+    container_name: rtcstats_initialize
+    build:
+      context: ./rtcstats-initialize
+      dockerfile: ./Dockerfile
+    environment:
+      # For AWS credentials
+      - AWS_ACCESS_KEY_ID=dummy
+      - AWS_SECRET_ACCESS_KEY=dummy
+      - AWS_ENDPOINT_URL=http://localstack:4566
+
+      # Localstack
+      - LOCALSTACK_ENDPOINT=http://localstack:4566
+
+      - RTCSTATS_METADATA_TABLE=rtcstats-meta-table-local
+      - RTCSTATS_S3_BUCKET=jitsi-micros-rtcstats-server
+      - RTCSTATS_S3_REGION=us-east-1
 
     depends_on:
       - localstack
@@ -95,6 +131,14 @@ services:
       - SERVICES=lambda,iam,logs,s3,dynamodb,firehose
       - DEBUG=${DEBUG:-1}
       - AWS_DEFAULT_REGION=us-east-1
+
+      # For AWS credentials
+      - AWS_ACCESS_KEY_ID=dummy
+      - AWS_SECRET_ACCESS_KEY=dummy
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_DEFAULT_OUTPUT=json
+      - AWS_ENDPOINT_URL=http://localstack:4566
+
     volumes:
       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
