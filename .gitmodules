@@ -1,0 +1,8 @@
+[submodule "rtcstats-server"]
+	path = rtcstats-server
+	url = https://github.com/Taukon/rtcstats-server
+	branch = localstack
+[submodule "rtc-visualizer"]
+	path = rtc-visualizer
+	url = https://github.com/Taukon/rtc-visualizer/
+	branch = localstack
