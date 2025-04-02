@@ -1,0 +1,21 @@
+{
+    "name": "rtcstats-initialize",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "start": "npm run init:s3 && npm run init:dynamodb",
+      "init:s3": "aws s3api create-bucket --bucket $RTCSTATS_S3_BUCKET",
+      "init:dynamodb": "node create-dynamodb.mjs",
+      "lint": "standard src scripts",
+      "lint-fix": "standard --fix src scripts"
+    },
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {
+      "aws-sdk": "^2.441.0"
+    },
+    "keywords": []
+}
+  
