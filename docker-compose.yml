@@ -66,7 +66,8 @@ services:
       - RTCSTATS_JWT_SECRET_ID
 
     depends_on:
-      - rtcstats_initialize
+      rtcstats_initialize:
+        condition: service_completed_successfully
 
 
   rtc_visualizer:
@@ -101,7 +102,8 @@ services:
       - USERS_FILE=.data/users.json
     
     depends_on:
-      - rtcstats_server
+      rtcstats_initialize:
+        condition: service_completed_successfully
 
   
   rtcstats_initialize:
@@ -126,6 +128,9 @@ services:
       - RTCSTATS_METADATA_TABLE=rtcstats-meta-table-local
       - RTCSTATS_S3_BUCKET=jitsi-micros-rtcstats-server
       - RTCSTATS_S3_REGION=us-east-1
+
+    depends_on:
+      - localstack
 
 
   localstack:
