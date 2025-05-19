@@ -29,16 +29,10 @@ rtcstats-localstack$ mv YOUR_KEY_FILE ./certs
 rtcstats-localstack$ mv YOUR_CRT_FILE ./certs
 ```
 
-Write the key and crt paths to `.env`
+Rewrite the key and crt paths in `.env`.
 ```
 RTCSTATS_KEYPATH=./certs/YOUR_KEY_FILE
 RTCSTATS_CERTPath=./certs/YOUR_CRT_FILE
-```
-
-Rewrite docker-compose.yml
-```
-- RTCSTATS_KEYPATH=./rtcstats-server/certs/YOUR_KEY_FILE
-- RTCSTATS_CERTPath=./rtcstats-server/certs/YOUR_CRT_FILE
 ```
 
 ---
