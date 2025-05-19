@@ -32,8 +32,39 @@ rtcstats-localstack$ mv YOUR_CRT_FILE ./certs
 Rewrite the key and crt paths in `.env` and enable https.
 ```
 RTCSTATS_KEYPATH=./certs/YOUR_KEY_FILE
-RTCSTATS_CERTPath=./certs/YOUR_CRT_FILE
+RTCSTATS_CERTPATH=./certs/YOUR_CRT_FILE
 RTCSTATS_HTTPS=true
+```
+
+---
+### New environments
+Add environments to `custom-environment-variables.yaml` in rtcstats-server
+```
+server:
+    ...
+    keyPath: RTCSTATS_KEYPATH
+    certPath: RTCSTATS_CERTPATH
+    tempPath: RTCSTATS_TEMPPATH
+    useHTTPS: RTCSTATS_HTTPS
+```
+
+### Endpoint for local DynamoDB and S3
+- Add environment to `custom-environment-variables.yaml` in rtcstats-server
+```
+dynamo:
+    ...
+    endpoint: AWS_ENDPOINT_URL_DYNAMODB
+
+```
+
+- Add endpoint to [S3Manager.js](https://github.com/jitsi/rtcstats-server/blob/master/src/store/S3Manager.js#L30) in rtcstats-server
+```
+this.s3bucket = new AWS.S3({
+            endpoint: process.env.AWS_ENDPOINT_URL_S3,
+            params: {
+                Bucket: bucket
+            }
+        });
 ```
 
 ---
