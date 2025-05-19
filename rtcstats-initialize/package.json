@@ -3,9 +3,9 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
-      "start": "npm run init:s3 && npm run init:dynamodb",
-      "init:s3": "node create-s3-bucket.mjs",
-      "init:dynamodb": "node create-dynamodb-table.mjs"
+      "start": "npm run init:dynamodb && npm run init:s3",
+      "init:dynamodb": "node create-dynamodb-table.mjs",
+      "init:s3": "node create-s3-bucket.mjs"
     },
     "author": "",
     "license": "ISC",
