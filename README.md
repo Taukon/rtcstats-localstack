@@ -29,10 +29,11 @@ rtcstats-localstack$ mv YOUR_KEY_FILE ./certs
 rtcstats-localstack$ mv YOUR_CRT_FILE ./certs
 ```
 
-Rewrite the key and crt paths in `.env`.
+Rewrite the key and crt paths in `.env` and enable https.
 ```
 RTCSTATS_KEYPATH=./certs/YOUR_KEY_FILE
 RTCSTATS_CERTPath=./certs/YOUR_CRT_FILE
+RTCSTATS_HTTPS=true
 ```
 
 ---
