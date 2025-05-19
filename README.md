@@ -3,9 +3,16 @@
 
 ### Setup
 
-create users.json for rtc-visualizer
+Create `.env` from `env.example` and edit `.env`
 ```shell
-rtcstats-localstack$ ./user-example.sh
+rtcstats-localstack$ cp env.example .env
+```
+
+Edit `.data/users.json` for rtc-visualizer
+```
+{
+    "XXX": "YYY"
+}
 ```
 
 Run Docker Compose
@@ -16,10 +23,16 @@ rtcstats-localstack$ docker compose up -d
 
 ### Use HTTPS
 
-Move key and crt files to `rtcstats-server/certs` directory
+Move key and crt files to `certs` directory for rtcstats-server
 ```shell
-rtcstats-localstack$ mv YOUR_KEY_FILE ./rtcstats-server/certs
-rtcstats-localstack$ mv YOUR_CRT_FILE ./rtcstats-server/certs
+rtcstats-localstack$ mv YOUR_KEY_FILE ./certs
+rtcstats-localstack$ mv YOUR_CRT_FILE ./certs
+```
+
+Write the key and crt paths to `.env`
+```
+RTCSTATS_KEYPATH=./certs/YOUR_KEY_FILE
+RTCSTATS_CERTPath=./certs/YOUR_CRT_FILE
 ```
 
 Rewrite docker-compose.yml
