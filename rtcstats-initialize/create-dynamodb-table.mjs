@@ -118,7 +118,6 @@ const tableConfig = {
 const ddb = new AWS.DynamoDB();
 
 
-// eslint-disable-next-line no-unused-vars
 const createTable = () => ddb.createTable(tableConfig, (err, data) => {
     if (err) {
         console.log('Could not create table', err);
