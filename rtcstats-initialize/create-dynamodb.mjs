@@ -2,22 +2,13 @@ import AWS from 'aws-sdk'
 
 const {
   RTCSTATS_METADATA_TABLE,
-  LOCALSTACK_ENDPOINT
-} = process.env
+  AWS_REGION: region,
+  AWS_ENDPOINT_URL_DYNAMODB: endpoint
+} = process.env;
 
-let configParam = {
-    region: process.env.RTCSTATS_S3_REGION
-};
+const config = endpoint ? { endpoint, region } : { region };
 
-if (typeof LOCALSTACK_ENDPOINT === 'string') {
-    configParam = {
-        endpoint: LOCALSTACK_ENDPOINT,
-        s3ForcePathStyle: true,
-        ...configParam
-    };
-}
-
-AWS.config.update(configParam);
+AWS.config.update(config);
 
 const tableConfig = {
     TableName: RTCSTATS_METADATA_TABLE,
