@@ -53,7 +53,7 @@ server:
 ```
 dynamo:
     ...
-    endpoint: AWS_ENDPOINT_URL_DYNAMODB
+    endpoint: RTCSTATS_DYNAMODB_ENDPOINT
 
 ```
 
@@ -62,7 +62,7 @@ dynamo:
 ...
 
 // https://github.com/jitsi/rtcstats-server/blob/master/src/store/S3Manager.js#L5
-const endpoint = process.env.AWS_ENDPOINT_URL_S3;
+const endpoint = process.env.RTCSTATS_S3_ENDPOINT;
 
 ...
 
@@ -100,7 +100,7 @@ class S3Manager {
 
 const {
     // https://github.com/jitsi/rtc-visualizer/blob/main/src/server/services/s3.mjs#L5
-    AWS_ENDPOINT_URL_S3: endpoint,
+    RTCSTATS_S3_ENDPOINT: endpoint,
     ...
 } = process.env
 

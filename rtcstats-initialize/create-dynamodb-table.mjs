@@ -3,7 +3,7 @@ import AWS from 'aws-sdk'
 const {
   RTCSTATS_METADATA_TABLE,
   AWS_REGION: region,
-  AWS_ENDPOINT_URL_DYNAMODB: endpoint
+  RTCSTATS_DYNAMODB_ENDPOINT: endpoint
 } = process.env;
 
 const config = endpoint ? { endpoint, region } : { region };

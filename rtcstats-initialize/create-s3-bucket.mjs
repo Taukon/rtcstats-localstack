@@ -3,7 +3,7 @@ import AWS from 'aws-sdk'
 const {
   RTCSTATS_S3_BUCKET,
   AWS_REGION: region,
-  AWS_ENDPOINT_URL_S3: endpoint
+  RTCSTATS_S3_ENDPOINT: endpoint
 } = process.env;
 
 const config = { region };

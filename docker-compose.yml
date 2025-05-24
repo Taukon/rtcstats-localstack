@@ -14,8 +14,6 @@ services:
       # For AWS credentials
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
-      - AWS_ENDPOINT_URL_S3
-      - AWS_ENDPOINT_URL_DYNAMODB
 
       # rtcstats-server: server
       - RTCSTATS_LOG_LEVEL
@@ -46,9 +44,11 @@ services:
       - RTCSTATS_S3_BUCKET
       - RTCSTATS_S3_USEIAMAUTH
       - RTCSTATS_S3_SIGNEDLINKEXPIRATIONSEC
+      - RTCSTATS_S3_ENDPOINT
 
       # rtcstats-server: dynamo
       - RTCSTATS_METADATA_TABLE
+      - RTCSTATS_DYNAMODB_ENDPOINT
 
       # rtcstats-server: webhooks
       - RTCSTATS_WEBHOOK_ENDPOINT
@@ -78,13 +78,13 @@ services:
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
       - AWS_REGION
-      - AWS_ENDPOINT_URL_S3
-      - AWS_ENDPOINT_URL_DYNAMODB
 
       # rtc-visualizer
       - ENDPOINT
       - RTCSTATS_S3_BUCKET
+      - RTCSTATS_S3_ENDPOINT
       - RTCSTATS_METADATA_TABLE
+      - RTCSTATS_DYNAMODB_ENDPOINT
       - RTCSTATS_JWT_PUBLIC_KEY
       - RTCSTATS_FILES_ENDPOINT
       - RTCSTATS_JWT_EGHT_PUBLIC_KEY
@@ -105,11 +105,11 @@ services:
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
       - AWS_REGION
-      - AWS_ENDPOINT_URL_S3
-      - AWS_ENDPOINT_URL_DYNAMODB
 
-      - RTCSTATS_METADATA_TABLE
       - RTCSTATS_S3_BUCKET
+      - RTCSTATS_S3_ENDPOINT
+      - RTCSTATS_METADATA_TABLE
+      - RTCSTATS_DYNAMODB_ENDPOINT
 
     depends_on:
       - localstack
