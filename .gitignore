@@ -1,5 +1,4 @@
 volume/
-certs/*
-!certs/key.pem
-!certs/cert.pem
-.env
+rtcstats-server/certs/*
+!rtcstats-server/certs/key.pem
+!rtcstats-server/certs/cert.pem
